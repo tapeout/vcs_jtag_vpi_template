@@ -7,3 +7,6 @@ simv
 vcdplus.vpd
 ucli.key
 csrc/
+DVEfiles/
+.nfs*
+core*

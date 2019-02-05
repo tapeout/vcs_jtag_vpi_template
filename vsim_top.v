@@ -21,16 +21,14 @@ module vsim_top();
   wire uart_txd;
   wire uart_rxd;
 
+  // Output
+  wire [2:0] gfsk_out;
+
   // Tie off rxd for now.
   assign uart_rxd = 1'd0;
 
-  wire t_io_clock_120MHz;
-  // Tie it off
-  assign t_io_clock_120MHz = 1'd0;
-
-  EE194RocketTop t (
+  EE194CoreTop t (
     .clock(clock),
-    .io_reset_in(reset),
     .io_jtag_TCK(TCK),
     .io_jtag_TMS(TMS),
     .io_jtag_TDI(TDI),
@@ -38,7 +36,23 @@ module vsim_top();
     .io_jtag_TDO(TDO),
     .io_uart_txd(uart_txd),
     .io_uart_rxd(uart_rxd),
-    .io_clock_120MHz(t_io_clock_120MHz)
+    .io_gfskout(gfsk_out),
+    .io_scanchain_PHI(1'd0),
+    .io_scanchain_PHIB(1'd0),
+    .io_scanchain_i0o1(1'd0),
+    .io_scanchain_LOAD(1'd0),
+    .io_scanchain_SCAN_IN(1'd0),
+    .io_scanchain_SCAN_OUT(1'd0),
+    .io_gpio_pins_0_i_ival(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
+    .io_gpio_pins_1_i_ival(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
+    .io_gpio_pins_2_i_ival(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
+    .io_gpio_pins_3_i_ival(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
+    .io_clock_40MHz(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
+    .io_isig(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
+    .io_qsig(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
+    .io_enable_scan_global(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
+    .io_alternate_modulation_in(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
+    .io_modulator_bypass_force(1'd0) // @[:ee194.DigitalTop.EE194BoomConfig.fir@
   );
 
   reg jtag_init_done = 0;
