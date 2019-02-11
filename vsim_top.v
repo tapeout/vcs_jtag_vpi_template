@@ -29,6 +29,7 @@ module vsim_top();
 
   EE194CoreTop t (
     .clock(clock),
+    .reset(reset),
     .io_jtag_TCK(TCK),
     .io_jtag_TMS(TMS),
     .io_jtag_TDI(TDI),
