@@ -4,8 +4,8 @@
 
 module vsim_top();
   localparam CLOCK_PERIOD = `CLOCK_PERIOD;
-
-  reg clock = 0;
+   
+  reg clock = 1;
   always #(CLOCK_PERIOD/2) clock <= ~clock; // 25ns*2 = 50ns = 20 MHz
 
   reg reset = 1;
@@ -82,10 +82,12 @@ module vsim_top();
 
   // Hold reset high for the first 50 cycles.
   initial begin
-    reset = 0;
-    #(CLOCK_PERIOD*1)
+   $vcdpluson(0);
+   
+   $vcdplusmemon(0);
+
     reset = 1;
-    #(CLOCK_PERIOD*49)
+    #(CLOCK_PERIOD*50)
     reset = 0;
   end
 
