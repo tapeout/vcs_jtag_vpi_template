@@ -4,6 +4,7 @@
 4. Build the VCS simulator with `./vcs_build.sh`.
 5. Run the VCS simulator with `./run_sim.sh`.
 6. In parallel, start OpenOCD with `./run_openocd.sh`.
-7. In parallel as well, use either `client.sh` in the openocd_riscv repo, or `telnet localhost 4444` to load and run programs.
+7. In parallel as well, run `telnet localhost 4444`
+8. In the telnet window run `load_image <path to elf file>` followed by `resume 0x20000000`
 8. Use `./vpd2gz.sh` to create a `.vcd.gz` to transfer the waveforms. Run `gunzip -f out.vcd.gz` locally to view the resultant waveforms.
 
