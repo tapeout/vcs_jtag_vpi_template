@@ -43,7 +43,7 @@ module vsim_top();
     .io_scanchain_i0o1(1'd0),
     .io_scanchain_LOAD(1'd0),
     .io_scanchain_SCAN_IN(1'd0),
-    .io_scanchain_SCAN_OUT(1'd0),
+    .io_scanchain_SCAN_OUT(),
     .io_gpio_pins_0_i_ival(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
     .io_gpio_pins_1_i_ival(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
     .io_gpio_pins_2_i_ival(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
@@ -83,9 +83,9 @@ module vsim_top();
 
   // Hold reset high for the first 50 cycles.
   initial begin
-   $vcdpluson(0);
+   //$vcdpluson(0);
    
-   $vcdplusmemon(0);
+   //$vcdplusmemon(0);
 
     reset = 1;
     #(CLOCK_PERIOD*50)
