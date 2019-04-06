@@ -83,9 +83,10 @@ module vsim_top();
 
   // Hold reset high for the first 50 cycles.
   initial begin
-   //$vcdpluson(0);
-   
-   //$vcdplusmemon(0);
+    `ifdef VCD
+      $vcdpluson(0);
+      $vcdplusmemon(0);
+    `endif
 
     reset = 1;
     #(CLOCK_PERIOD*50)

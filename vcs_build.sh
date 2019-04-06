@@ -15,6 +15,7 @@ cat jtag_vpi.c >> jtag_vpi_vcs.c
 vcs -full64 -debug_pp +v2k +vpi +define+VCS_VPI \
   +define+RANDOMIZE_REG_INIT +define+RANDOMIZE_MEM_INIT \
   +define+RANDOMIZE_DELAY=2 \
+  +define+VCD \
   +lint=all,noVCDE \
   -sverilog \
   -top vsim_top vsim_top.v \
