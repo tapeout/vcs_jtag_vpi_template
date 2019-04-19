@@ -1,0 +1,2 @@
+$sine call=sine size=r args=1
+$cosine call=cosine size=r args=1

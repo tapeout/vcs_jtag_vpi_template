@@ -1,12 +1,47 @@
 `timescale 1ns/100ps
 
-`define CLOCK_PERIOD 50 // 50ns
+`define CLOCK_PERIOD 100 // 100ns
 
 module vsim_top();
   localparam CLOCK_PERIOD = `CLOCK_PERIOD;
+  localparam ADC_SAMPLE_PERIOD = 25; // 25 ns = 40 Mhz
+  localparam PI = 3.1415;
+
+  // Output
+  wire [2:0] gfsk_out;
+
+  reg [4:0] I;
+  reg [4:0] Q;
+
+  real phase;
+  real freq;
+  real s;
+  real c;
+  reg gfsk_started;
+  initial begin
+    phase = 0;
+    gfsk_started = 0;
+  end
+
+  always #ADC_SAMPLE_PERIOD begin
+    if (gfsk_started) begin
+      freq = (2250000.0 + gfsk_out * 62500.0) / 1000000000.0; // freq in Ghz so 1/freq is in ns
+      phase = phase + (2*PI*ADC_SAMPLE_PERIOD * freq);
+      if (phase > 2*PI) begin
+        phase = phase - 2*PI;
+      end
+      I <= 16 + 10 * $sine(phase);
+      Q <= 16 + 10 * $cosine(phase);
+    end else if (gfsk_out != 3'd0) begin
+      gfsk_started = 1'b1;
+    end
+  end
    
   reg clock = 1;
-  always #(CLOCK_PERIOD/2) clock <= ~clock; // 25ns*2 = 50ns = 20 MHz
+  always #(CLOCK_PERIOD/2) clock <= ~clock; // 50ns*2 = 100ns = 10 MHz
+  
+  reg clock40 = 1;
+  always #(12.5) clock40 <= ~clock40; // 12.5ns*2 = 25ns = 40 MHz
 
   reg reset = 1;
 
@@ -20,9 +55,6 @@ module vsim_top();
   // UART
   wire uart_txd;
   wire uart_rxd;
-
-  // Output
-  wire [2:0] gfsk_out;
 
   // Tie off rxd for now.
   assign uart_rxd = 1'd0;
@@ -48,9 +80,9 @@ module vsim_top();
     .io_gpio_pins_1_i_ival(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
     .io_gpio_pins_2_i_ival(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
     .io_gpio_pins_3_i_ival(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
-    .io_clock_40MHz(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
-    .io_isig(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
-    .io_qsig(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
+    .io_clock_40MHz(clock40), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
+    .io_isig(I), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
+    .io_qsig(Q), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
     .io_enable_scan_global(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
     .io_alternate_modulation_in(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
     .io_modulator_bypass_force(1'd0) // @[:ee194.DigitalTop.EE194BoomConfig.fir@
@@ -87,7 +119,6 @@ module vsim_top();
       $vcdpluson(0);
       $vcdplusmemon(0);
     `endif
-
     reset = 1;
     #(CLOCK_PERIOD*50)
     reset = 0;
