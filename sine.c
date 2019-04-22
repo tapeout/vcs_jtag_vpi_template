@@ -28,10 +28,10 @@ int cosine(char * user_data) {
 }
 
 uint32_t sine_size(char * user_data) {
-  return 8*sizeof(double);
+  return sizeof(double);
 }
 
-/* void registerSineFunc() {
+void registerSineFunc() {
   s_vpi_systf_data task_data_s;
   p_vpi_systf_data task_data_p = &task_data_s;
   task_data_p->type = vpiSysFunc;
@@ -57,8 +57,12 @@ void registerCosineFunc() {
   vpi_register_systf(task_data_p);
 }
 
+#ifndef VCS_VPI
+
 void (*vlog_startup_routines[ ]) () = {
   registerSineFunc,
   registerCosineFunc,
   0
-}; */
+};
+
+#endif
