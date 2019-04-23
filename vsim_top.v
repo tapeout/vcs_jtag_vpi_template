@@ -63,6 +63,7 @@ module vsim_top();
   wire status;
   always @(posedge done) begin
     if (gfsk_started) begin
+      $display("status: %b", status);
       $finish(status == 1'd1);
     end
   end
@@ -88,8 +89,8 @@ module vsim_top();
     .io_gpio_pins_1_i_ival(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
     .io_gpio_pins_2_i_ival(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
     .io_gpio_pins_3_i_ival(1'd0), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
-    .io_gpio_pins_2_o_oval(status), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
-    .io_gpio_pins_3_o_oval(done), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
+    .io_gpio_pins_1_o_oval(status), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
+    .io_gpio_pins_2_o_oval(done), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
     .io_clock_40MHz(clock40), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
     .io_isig(I), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]
     .io_qsig(Q), // @[:ee194.DigitalTop.EE194BoomConfig.fir@237782.4]

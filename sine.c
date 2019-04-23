@@ -10,7 +10,7 @@ int sine(char * user_data) {
   argval.format = vpiRealVal;
   vpi_get_value(argh, &argval);
   argval.value.real =  sin(argval.value.real);
-  vpi_put_value(systfref, &argval, 0, vpiNoDelay);
+  // vpi_put_value(systfref, &argval, 0, vpiNoDelay);
   return 0;
 }
 
@@ -23,7 +23,7 @@ int cosine(char * user_data) {
   argval.format = vpiRealVal;
   vpi_get_value(argh, &argval);
   argval.value.real =  cos(argval.value.real);
-  vpi_put_value(systfref, &argval, 0, vpiNoDelay);
+  // vpi_put_value(systfref, &argval, 0, vpiNoDelay);
   return 0;
 }
 
