@@ -24,15 +24,14 @@ module vsim_top();
   end
 
   always #ADC_SAMPLE_PERIOD begin
-    if (gfsk_started) begin
-      freq = (2250000.0 + gfsk_out * 62500.0) / 1000000000.0; // freq in Ghz so 1/freq is in ns
-      phase = phase + (2*PI*ADC_SAMPLE_PERIOD * freq);
-      if (phase > 2*PI) begin
-        phase = phase - 2*PI;
-      end
-      I <= 16 + 10 * $sine(phase);
-      Q <= 16 + 10 * $cosine(phase);
-    end else if (gfsk_out != 3'd0) begin
+    freq = (2250000.0 + gfsk_out * 62500.0) / 1000000000.0; // freq in Ghz so 1/freq is in ns
+    phase = phase + (2*PI*ADC_SAMPLE_PERIOD * freq);
+    if (phase > 2*PI) begin
+      phase = phase - 2*PI;
+    end
+    I <= 16 + $sine(phase);
+    Q <= 16 + $cosine(phase);
+    if (gfsk_out != 3'd0) begin
       gfsk_started = 1'b1;
     end
   end
@@ -129,6 +128,10 @@ module vsim_top();
     `ifdef VCD
       $vcdpluson(0);
       $vcdplusmemon(0);
+    `endif
+    `ifdef ICARUS
+      $dumpfile("bletest.vcd");
+      $dumpvars(1, t);
     `endif
     reset = 1;
     #(CLOCK_PERIOD*50)
